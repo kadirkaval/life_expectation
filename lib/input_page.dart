@@ -15,7 +15,7 @@ class _IputPageState extends State<IputPage> {
   bool selectedCinsiyet = false;
   double _curentValueSigra = 15;
   double _curentValueSpor = 1;
-  int boyUzunlugu=170;
+  int boyUzunlugu = 170;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,35 +59,31 @@ class _IputPageState extends State<IputPage> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blue)),
-                              child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    boyUzunlugu++;
-                                  });
-                                },
-                                icon: const Icon(
-                                  FontAwesomeIcons.plus,
-                                  color: Colors.blue,
-                                ),
-                              ),
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  minimumSize: const Size(36, 36),
+                                  side: const BorderSide(
+                                      color: Colors.blue, width: 1.2)),
+                              onPressed: () {
+                                setState(() {
+                                  boyUzunlugu++;
+                                });
+                              },
+                              child: const Icon(FontAwesomeIcons.plus),
                             ),
-                            SizedBox(height: 5),
-                            Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blue)),
-                              child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    boyUzunlugu--;
-                                  });
-                                },
-                                icon: const Icon(
-                                  FontAwesomeIcons.minus,
-                                  color: Colors.blue,
-                                ),
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  minimumSize: const Size(36, 36),
+                                  side: const BorderSide(
+                                      color: Colors.blue, width: 1.2)),
+                              onPressed: () {
+                                setState(() {
+                                  boyUzunlugu--;
+                                });
+                              },
+                              child: const Icon(
+                                FontAwesomeIcons.minus,
+                                color: Colors.blue,
                               ),
                             ),
                           ],
