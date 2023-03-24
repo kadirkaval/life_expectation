@@ -15,6 +15,7 @@ class _IputPageState extends State<IputPage> {
   bool selectedCinsiyet = false;
   double _curentValueSigra = 15;
   double _curentValueSpor = 1;
+  int boyUzunlugu=170;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,67 @@ class _IputPageState extends State<IputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: MyContainer(),
+                  child: MyContainer(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const RotatedBox(
+                            quarterTurns: 3,
+                            child: Text(
+                              "BOY",
+                              style: TextStyle(
+                                  fontSize: 35,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        RotatedBox(
+                            quarterTurns: 3,
+                            child: Text(
+                              boyUzunlugu.toString(),
+                              style: const TextStyle(
+                                  fontSize: 35,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.blue)),
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    boyUzunlugu++;
+                                  });
+                                },
+                                icon: const Icon(
+                                  FontAwesomeIcons.plus,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.blue)),
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    boyUzunlugu--;
+                                  });
+                                },
+                                icon: const Icon(
+                                  FontAwesomeIcons.minus,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: MyContainer(),
