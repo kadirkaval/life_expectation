@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:life_expectation/resualt_page.dart';
+import 'package:life_expectation/user_data.dart';
 
 import 'my_card_widget.dart';
 import 'my_container.dart';
@@ -12,10 +14,7 @@ class IputPage extends StatefulWidget {
 }
 
 class _IputPageState extends State<IputPage> {
-  bool selectedCinsiyet = false;
-  double _curentValueSigra = 15;
-  double _curentValueSpor = 1;
-  int boyUzunlugu = 170;
+ UserData user = UserData();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +26,7 @@ class _IputPageState extends State<IputPage> {
         centerTitle: true,
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -35,65 +35,13 @@ class _IputPageState extends State<IputPage> {
               children: [
                 Expanded(
                   child: MyContainer(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const RotatedBox(
-                            quarterTurns: 3,
-                            child: Text(
-                              "BOY",
-                              style: TextStyle(
-                                  fontSize: 35,
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                        RotatedBox(
-                            quarterTurns: 3,
-                            child: Text(
-                              boyUzunlugu.toString(),
-                              style: const TextStyle(
-                                  fontSize: 35,
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                  minimumSize: const Size(36, 36),
-                                  side: const BorderSide(
-                                      color: Colors.blue, width: 1.2)),
-                              onPressed: () {
-                                setState(() {
-                                  boyUzunlugu++;
-                                });
-                              },
-                              child: const Icon(FontAwesomeIcons.plus),
-                            ),
-                            OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                  minimumSize: const Size(36, 36),
-                                  side: const BorderSide(
-                                      color: Colors.blue, width: 1.2)),
-                              onPressed: () {
-                                setState(() {
-                                  boyUzunlugu--;
-                                });
-                              },
-                              child: const Icon(
-                                FontAwesomeIcons.minus,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    child: buildRowOutlineButton("BOY"),
                   ),
                 ),
                 Expanded(
-                  child: MyContainer(),
+                  child: MyContainer(
+                    child: buildRowOutlineButton("KİLO"),
+                  ),
                 ),
               ],
             ),
@@ -111,16 +59,16 @@ class _IputPageState extends State<IputPage> {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          _curentValueSpor.round().toString(),
+                          user.curentValueSpor.round().toString(),
                           style: TextStyle(fontSize: 40, color: Colors.blue),
                         ),
                         Slider(
-                          value: _curentValueSpor,
+                          value: user.curentValueSpor,
                           min: 0,
                           max: 7,
                           onChanged: (double value) {
                             setState(() {
-                              _curentValueSpor = value;
+                              user.curentValueSpor = value;
                             });
                           },
                         )
@@ -144,16 +92,16 @@ class _IputPageState extends State<IputPage> {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          _curentValueSigra.round().toString(),
+                          user.curentValueSigra.round().toString(),
                           style: TextStyle(fontSize: 40, color: Colors.blue),
                         ),
                         Slider(
-                          value: _curentValueSigra,
+                          value: user.curentValueSigra,
                           min: 0,
                           max: 30,
                           onChanged: (double value) {
                             setState(() {
-                              _curentValueSigra = value;
+                              user.curentValueSigra = value;
                             });
                           },
                         )
@@ -171,10 +119,12 @@ class _IputPageState extends State<IputPage> {
                   child: MyContainer(
                       onTap: () {
                         setState(() {
-                          selectedCinsiyet = true;
+                          user.selectedCinsiyet = "KADIN";
                         });
                       },
-                      color: selectedCinsiyet ? Colors.lightBlue : Colors.white,
+                      color: user.selectedCinsiyet=="KADIN"
+                          ? Colors.lightBlue.shade200
+                          : Colors.white,
                       child: MyCardWidget(
                         icon: FontAwesomeIcons.venus,
                         text: "KADIN",
@@ -184,11 +134,12 @@ class _IputPageState extends State<IputPage> {
                   child: MyContainer(
                       onTap: () {
                         setState(() {
-                          selectedCinsiyet = false;
+                          user.selectedCinsiyet = "ERKEK";
                         });
                       },
-                      color:
-                          !selectedCinsiyet ? Colors.lightBlue : Colors.white,
+                      color: user.selectedCinsiyet=="ERKEK"
+                          ? Colors.lightBlue.shade200
+                          : Colors.white,
                       child: MyCardWidget(
                         icon: FontAwesomeIcons.mars,
                         text: "ERKEK",
@@ -197,8 +148,80 @@ class _IputPageState extends State<IputPage> {
               ],
             ),
           ),
+          Container(
+            color: Colors.white,
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ResaultPage(userData: user),),);
+              },
+              child: const Text(
+                "HESAPLA",
+                style: TextStyle(fontSize: 20, color: Colors.black54),
+              ),
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  Row buildRowOutlineButton(String label) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        RotatedBox(
+            quarterTurns: 3,
+            child: Text(
+              label,
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold),
+            )),
+        RotatedBox(
+            quarterTurns: 3,
+            child: Text(
+              label == "BOY" ? user.boy.toString() : user.kilo.toString(),
+              style: const TextStyle(
+                  fontSize: 40,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold),
+            )),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(40, 40),
+                  side: const BorderSide(color: Colors.black38)),
+              onPressed: () {
+                setState(() {
+                  label == "BOY" ? user.boy++ : user.kilo++;
+                });
+              },
+              child: const Icon(
+                FontAwesomeIcons.plus,
+                size: 20,
+              ),
+            ),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(36, 40),
+                  side: const BorderSide(color: Colors.black38)),
+              onPressed: () {
+                setState(() {
+                  label == "BOY" ? user.boy-- : user.kilo--;
+                });
+              },
+              child: const Icon(
+                FontAwesomeIcons.minus,
+                color: Colors.blue,
+                size: 20,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
